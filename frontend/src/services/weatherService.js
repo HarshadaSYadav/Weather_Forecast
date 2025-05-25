@@ -3,7 +3,7 @@ import axios from 'axios';
 // Fetch weather data from our backend
 export const fetchWeatherData = async (city, unit = 'metric') => {
   try {
-    const response = await axios.get(`/api/weather?city=${encodeURIComponent(city)}&units=${unit}`);
+    const response = await axios.get(`https://weather-forecast-ae2y.vercel.app/api/weather?city=${encodeURIComponent(city)}&units=${unit}`);
     return response.data;
   } catch (error) {
     if (error.response) {
