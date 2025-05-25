@@ -11,7 +11,14 @@ dotenv.config();
 
 // Routes
 import weatherRoutes from './routes/weatherRoutes.js';
+const corsOptions = {
+  origin:'https://weather-forecast-azure-one.vercel.app',// Allow the frontend domain
+  methods: 'GET,POST,PUT,DELETE,OPTIONS', // Allowed methods
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  };
 
+// Middleware
+app.use(cors(corsOptions));
 // Initialize express
 const app = express();
 const PORT = process.env.PORT || 5000;
