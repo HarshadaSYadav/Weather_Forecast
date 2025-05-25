@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy-color: #131B2E;
+  --gold-color: #F5B642;
+  --sky-color: #4C87F0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--navy-color);
+  color: white;
+  line-height: 1.5;
+}
+
+.glass-card {
+  @apply bg-navy-light bg-opacity-50 backdrop-blur-lg rounded-2xl shadow-card;
+}
+
+.glass-card-active {
+  @apply bg-sky bg-opacity-20 backdrop-blur-lg rounded-2xl shadow-card border border-sky border-opacity-20;
+}
+
+.glass-card:hover {
+  @apply shadow-card-hover;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+.glass-input {
+  @apply bg-navy-light bg-opacity-50 backdrop-blur-md rounded-xl border border-white border-opacity-10 shadow-md;
+}
+
+.glass-input:focus {
+  @apply outline-none border-sky border-opacity-50;
+}
+
+.btn-primary {
+  @apply bg-sky hover:bg-sky-dark text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Weather icons animations */
+.cloud-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.rain-drop {
+  animation: rain 1.5s linear infinite;
+}
+
+.sun-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes rain {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(20px) translateX(5px);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
