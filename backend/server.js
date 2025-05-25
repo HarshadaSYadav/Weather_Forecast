@@ -21,6 +21,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 // Initialize express
 const app = express();
+app.use((req, res, next) => {
+  console.log("CORS Headers:");
+  console.log(req.headers);
+  next();
+});
 const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
