@@ -6,42 +6,41 @@ import morgan from 'morgan';
 import { rateLimit } from 'express-rate-limit';
 import mongoose from 'mongoose';
 
-// Load env variables
+// Load environment variables
 dotenv.config();
 
-// Routes
-import weatherRoutes from './routes/weatherRoutes.js';
-const corsOptions = {
-  origin:'https://weather-forecast-azure-one.vercel.app',// Allow the frontend domain
-  methods: 'GET,POST,PUT,DELETE,OPTIONS', // Allowed methods
-  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-  };
-
-// Middleware
-app.use(cors(corsOptions));
 // Initialize express
 const app = express();
-app.use((req, res, next) => {
-  console.log("CORS Headers:");
-  console.log(req.headers);
-  next();
-});
-const PORT = process.env.PORT || 5000;
+
+// Define CORS options
+const corsOptions = {
+  origin: 'https://weather-forecast-azure-one.vercel.app', // Allow the frontend domain
+  methods: 'GET,POST,PUT,DELETE,OPTIONS', // Allowed methods
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+};
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => console.log('MongoDB connected'))
   .catch(err => {
     console.error('MongoDB connection error:', err);
-    // Continue running even if MongoDB fails to connect
     console.log('Continuing without MongoDB...');
   });
 
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('dev'));
+
+// Logging CORS headers (optional for debugging)
+app.use((req, res, next) => {
+  console.log("CORS Headers:", req.headers);
+  next();
+});
 
 // Rate limiting
 const limiter = rateLimit({
@@ -51,11 +50,10 @@ const limiter = rateLimit({
   legacyHeaders: false,
   message: 'Too many requests, please try again after 15 minutes',
 });
-
-// Apply rate limiting to all requests
 app.use(limiter);
 
 // Routes
+import weatherRoutes from './routes/weatherRoutes.js';
 app.use('/api/weather', weatherRoutes);
 
 // Error handling middleware
@@ -69,6 +67,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
